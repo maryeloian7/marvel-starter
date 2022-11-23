@@ -7,6 +7,7 @@ import Spinner from '../spinner/Spinner';
 import MarvelService from '../../services/MarvelService';
 
 
+
 class RandomChar extends Component {
     state = {
         char: {},
@@ -32,6 +33,12 @@ class RandomChar extends Component {
         })
     }
 
+    onChatLoading= () => {
+        this.setState({
+            loading: true
+        })
+    }
+
     onError = () => {
         this.setState({
             loading: false,
@@ -41,6 +48,7 @@ class RandomChar extends Component {
 
     updateChar = () => {
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
+        this.onChatLoading();
         this.marvelService
             .getCharacter(id)
             .then(this.onChatLoaded)
@@ -93,10 +101,10 @@ const View = ({char}) => {
                             {description}
                         </p>
                         <div className="randomchar__btns">
-                            <a href="{homepage}" className="button button__main">
+                            <a href={homepage} className="button button__main">
                                 <div className="inner">homepage</div>
                             </a>
-                            <a href="{wiki}" className="button button__secondary">
+                            <a href={wiki} className="button button__secondary">
                                 <div className="inner">Wiki</div>
                             </a>
                         </div>
