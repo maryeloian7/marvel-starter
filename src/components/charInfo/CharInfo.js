@@ -6,16 +6,14 @@ import ErrorMessege from '../errorMessege/ErrorMessege';
 import Skeleton from '../skeleton/Skeleton';
 
 import './charInfo.scss';
-import MarvelService from '../../services/MarvelService';
+import useMarvelService from '../../services/MarvelService';
 
 
 const CharInfo = (props) => {
 
     const [char, setChar] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
 
-    const marvelService = new MarvelService();
+    const {loading, error, getCharacter} = useMarvelService();
 
     useEffect(() => {
         updateChar()
@@ -28,28 +26,18 @@ const CharInfo = (props) => {
             return;
         }
 
-        onChatLoading();
-        marvelService
-            .getCharacter(charId)
+
+        getCharacter(charId)
             .then(onChatLoaded)
-            .catch(onError)
+
         
     }
 
 
     const onChatLoaded = (char) => {
         setChar(char);
-        setLoading(false)
     }
 
-    const onChatLoading = () => {
-        setLoading(true)
-    }
-
-    const onError = () => {
-        setLoading(false);
-        setError(true)
-    }
     
 
     const skeleton = char || loading || error  ? null : <Skeleton/>;

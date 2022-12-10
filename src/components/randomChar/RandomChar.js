@@ -4,48 +4,34 @@ import './randomChar.scss';
 import ErrorMessege from '../errorMessege/ErrorMessege';
 import mjolnir from '../../resources/img/mjolnir.png';
 import Spinner from '../spinner/Spinner';
-import MarvelService from '../../services/MarvelService';
+import useMarvelService from '../../services/MarvelService';
 
 
 
 const RandomChar = () => {
-    const [char, setChar] = useState({})
-    const [loading, setLoading] = useState(true)
-    const [error, serError] = useState(false)
 
-    const marvelService = new MarvelService();
+    const [char, setChar] = useState({})
+    const {loading, error, getCharacter, clearError} = useMarvelService();
 
     useEffect(() => {
         updateChar();
         // const timerId = setInterval(updateChar, 60000);
 
-        // return() =>{
-        //     clearImmediate(timerId)
+        // return () => {
+        //     clearInterval(timerId)
         // }
     }, [])
 
 
-    const onChatLoaded = (char) => {
+    const onCharLoaded = (char) => {
         setChar(char);
-        setLoading(false)
-    }
-
-    const onChatLoading= () => {
-        setLoading(true)
-    }
-
-    const onError = () => {
-        setLoading(false)
-        serError(true)
     }
 
     const updateChar = () => {
-        const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
-            onChatLoading();
-            marvelService
-            .getCharacter(id)
-            .then(onChatLoaded)
-            .catch(onError);
+        clearError()
+        const id = Math.floor(Math.random() * (1011400 - 1011000)) + 1011000;
+        getCharacter(id)
+            .then(onCharLoaded)
 
     }
 
@@ -77,12 +63,12 @@ const RandomChar = () => {
     }
 
 
-const View = ({char}) => {
-    const {name, description, thumbnail, homepage, wiki} = char;
-    let imgStyle = {'objectFit' : 'cover'};
-    if(thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg'){
-        imgStyle = {'objectFit' : 'contain'};
-    }
+    const View = ({char}) => {
+        const {name, description, thumbnail, homepage, wiki} = char;
+        let imgStyle = {'objectFit' : 'cover'};
+        if (thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
+            imgStyle = {'objectFit' : 'contain'};
+        }
 
     return(
         <div className="randomchar__block">
