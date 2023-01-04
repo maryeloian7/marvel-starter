@@ -1,19 +1,19 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types'; 
-
+import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessege from '../errorMessege/ErrorMessege';
 import Skeleton from '../skeleton/Skeleton';
 
 import './charInfo.scss';
-import useMarvelService from '../../services/MarvelService';
+
 
 
 const CharInfo = (props) => {
 
     const [char, setChar] = useState(null);
 
-    const {loading, error, getCharacter} = useMarvelService();
+    const {loading, error, getCharacter, clearError} = useMarvelService();
 
     useEffect(() => {
         updateChar()
@@ -26,7 +26,7 @@ const CharInfo = (props) => {
             return;
         }
 
-
+        clearError();
         getCharacter(charId)
             .then(onChatLoaded)
 

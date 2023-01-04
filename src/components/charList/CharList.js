@@ -29,20 +29,15 @@ const CharList = (props) => {
     }
 
 
-
     const onCharListLoaded = (newCharList) => {
         let ended = false;
         if (newCharList.length < 9) {
             ended = true;
         }
-
-        setCharList(charList => [...charList,   ...newCharList]);
-        setNewItenLoading(newItenLoading => false)
-        setOffset(offset => offset + 9)
-        setCharEnded(charEnded => ended)
-
-
-
+        setCharList(charList => [...charList, ...newCharList]);
+        setNewItenLoading(newItenLoading => false);
+        setOffset(offset => offset + 9);
+        setCharEnded(charEnded => ended);
     }
 
 
@@ -57,7 +52,7 @@ const CharList = (props) => {
                 <li 
                     className="char__item"
                     key={item.id}
-                    onFocus={() => props.onCharSelectede(item.id)}
+                    onClick={() => props.onCharSelectede(item.id)}
                     tabIndex={0}
                     >
                         <img src={item.thumbnail} alt={item.name} style={imgStyle}/>
