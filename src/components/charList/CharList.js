@@ -1,4 +1,4 @@
-import { useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import useMarvelService from '../../services/MarvelService';
@@ -12,7 +12,7 @@ import './charList.scss';
 const CharList = (props) => {
 
     const [charList, setCharList] = useState([]);
-    const [newItenLoading, setNewItenLoading] = useState(false);
+    const [newItenLoading, setNewItemLoading] = useState(false);
     const [offset, setOffset] = useState(210);
     const [charEnded, setCharEnded] = useState(false);
 
@@ -20,24 +20,25 @@ const CharList = (props) => {
 
     useEffect(() => {
         onRequest(offset, true);
+        // eslint-disable-next-line
     }, [])
 
     const onRequest = (offset, initial) => {
-        initial ? setNewItenLoading(false) : setNewItenLoading(true)
+        initial ? setNewItemLoading(false) : setNewItemLoading(true);
         getAllCharacters(offset)
             .then(onCharListLoaded)
     }
 
 
-    const onCharListLoaded = (newCharList) => {
+    const onCharListLoaded = async(newCharList) => {
         let ended = false;
         if (newCharList.length < 9) {
             ended = true;
         }
-        setCharList(charList => [...charList, ...newCharList]);
-        setNewItenLoading(newItenLoading => false);
-        setOffset(offset => offset + 9);
-        setCharEnded(charEnded => ended);
+        setCharList([...charList, ...newCharList]);
+        setNewItemLoading(false);
+        setOffset(offset + 9);
+        setCharEnded(ended);
     }
 
 
@@ -68,8 +69,7 @@ const CharList = (props) => {
         
     }
 
-    
-    
+ 
     const items = renderItems(charList);
 
     const errorMessage = error ? <ErrorMessege/> : null;
